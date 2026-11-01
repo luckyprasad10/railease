@@ -16,6 +16,10 @@ import {
   X,
   ChevronDown,
   Heart,
+  Star,
+  Coffee,
+  ArrowRight,
+  Sparkles,
 } from 'lucide-react';
 import { useRailwayStore, ActiveTab } from '../store/useRailwayStore';
 
@@ -32,13 +36,21 @@ export const Navbar: React.FC = () => {
   } = useRailwayStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [foodMegaMenuOpen, setFoodMegaMenuOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
+  const foodMenuRef = useRef<HTMLDivElement>(null);
+  const moreDropdownRef = useRef<HTMLDivElement>(null);
+  const foodHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Close menus on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (foodMenuRef.current && !foodMenuRef.current.contains(target)) {
+        setFoodMegaMenuOpen(false);
+      }
+      if (moreDropdownRef.current && !moreDropdownRef.current.contains(target)) {
         setMoreDropdownOpen(false);
       }
     };
@@ -46,24 +58,35 @@ export const Navbar: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Primary clean text links (decluttered, no button boxes, pure typography)
+  // Safe hover handlers for rich mega-menu
+  const handleFoodMouseEnter = () => {
+    if (foodHoverTimeoutRef.current) clearTimeout(foodHoverTimeoutRef.current);
+    setFoodMegaMenuOpen(true);
+  };
+
+  const handleFoodMouseLeave = () => {
+    foodHoverTimeoutRef.current = setTimeout(() => {
+      setFoodMegaMenuOpen(false);
+    }, 200);
+  };
+
+  // Primary clean text links
   const primaryTabs: { id: ActiveTab; label: string; isLive?: boolean }[] = [
     { id: 'search', label: 'Book Trains' },
     { id: 'pnr', label: 'PNR Status' },
     { id: 'live', label: 'Live Tracker', isLive: true },
   ];
 
-  // Secondary tabs grouped into "More"
-  const isMoreActive = ['station-services', 'about', 'passengers', 'admin'].includes(activeTab);
+  const isMoreActive = ['passengers', 'admin'].includes(activeTab);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18">
-          {/* Left: Refined Proportional Brand Logo (Vertically Centered) */}
+        <div className="flex items-center justify-between h-16 sm:h-18 gap-4 sm:gap-6">
+          {/* 1. Left: Refined Brand Logo (Proportionally Balanced & Vertically Centered) */}
           <div
             onClick={() => setActiveTab('search')}
-            className="flex items-center space-x-2.5 cursor-pointer select-none group"
+            className="flex items-center space-x-2.5 cursor-pointer select-none group flex-shrink-0"
           >
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-all">
               <Train className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
@@ -81,40 +104,243 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Center: Decluttered Clean Navigation Links (Plain Text with Underline / Hover) */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          {/* 2. Center: Decluttered Main Navigation Links (Clean text, smooth underline, breathing room) */}
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-7">
+            {/* Primary Nav Links: Book Trains, PNR Status, Live Tracker */}
             {primaryTabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setFoodMegaMenuOpen(false);
+                    setMoreDropdownOpen(false);
+                  }}
                   className={`relative py-1 text-sm font-semibold transition-colors flex items-center space-x-1.5 ${
                     isActive
                       ? 'text-blue-600 dark:text-blue-400 font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <span>{tab.label}</span>
                   {tab.isLive && (
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   )}
-                  {/* Subtle active underline indicator */}
                   {isActive && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
+                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full animate-fade-in" />
                   )}
                 </button>
               );
             })}
 
-            {/* Consolidated "More" Dropdown (Includes Services & Food, About, Passenger Vault, Ops Console) */}
-            <div className="relative" ref={dropdownRef}>
+            {/* Rich "Services & Food" Link with Visual Mega-Menu */}
+            <div
+              className="relative"
+              ref={foodMenuRef}
+              onMouseEnter={handleFoodMouseEnter}
+              onMouseLeave={handleFoodMouseLeave}
+            >
               <button
-                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                onClick={() => {
+                  setFoodMegaMenuOpen(!foodMegaMenuOpen);
+                  setMoreDropdownOpen(false);
+                }}
+                className={`relative py-1 text-sm font-semibold transition-colors flex items-center space-x-1.5 ${
+                  activeTab === 'station-services' || foodMegaMenuOpen
+                    ? 'text-blue-600 dark:text-blue-400 font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span>Services & Food</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                    foodMegaMenuOpen ? 'rotate-180' : ''
+                  }`}
+                />
+                {activeTab === 'station-services' && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
+                )}
+              </button>
+
+              {/* Rich Food Mega-Menu Dropdown */}
+              {foodMegaMenuOpen && (
+                <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[550px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl p-5 z-50 animate-fade-in">
+                  {/* Mega-menu Header */}
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                        <UtensilsCrossed className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900 dark:text-white">
+                          Rail-Dine Seat Delivery & Catering
+                        </div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                          Fresh hot meals from IRCTC partner restaurants directly to your berth
+                        </div>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/60">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span>Seat Delivery</span>
+                    </span>
+                  </div>
+
+                  {/* Food Thumbnails Grid (Rich Images) */}
+                  <div className="grid grid-cols-3 gap-3 py-3.5">
+                    {/* Item 1: Hyderabadi Dum Biryani */}
+                    <div
+                      onClick={() => {
+                        setActiveTab('station-services');
+                        setFoodMegaMenuOpen(false);
+                      }}
+                      className="group cursor-pointer rounded-2xl p-2 bg-slate-50 dark:bg-slate-800/60 hover:bg-emerald-50/60 dark:hover:bg-slate-800 transition-all border border-slate-200/60 dark:border-slate-700/60 text-center"
+                    >
+                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-2 shadow-xs">
+                        <img
+                          src="/images/food/biryani.jpg"
+                          alt="Hyderabadi Dum Biryani"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-[9px] font-bold text-white flex items-center space-x-0.5">
+                          <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
+                          <span>4.8</span>
+                        </span>
+                      </div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                        Dum Biryani
+                      </div>
+                      <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                        Haldiram's • Veg/Chicken
+                      </div>
+                      <div className="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                        from ₹189
+                      </div>
+                    </div>
+
+                    {/* Item 2: Royal Deluxe Thali */}
+                    <div
+                      onClick={() => {
+                        setActiveTab('station-services');
+                        setFoodMegaMenuOpen(false);
+                      }}
+                      className="group cursor-pointer rounded-2xl p-2 bg-slate-50 dark:bg-slate-800/60 hover:bg-emerald-50/60 dark:hover:bg-slate-800 transition-all border border-slate-200/60 dark:border-slate-700/60 text-center"
+                    >
+                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-2 shadow-xs">
+                        <img
+                          src="/images/food/thali.jpg"
+                          alt="Royal Deluxe Indian Thali"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-[9px] font-bold text-white flex items-center space-x-0.5">
+                          <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
+                          <span>4.9</span>
+                        </span>
+                      </div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                        Royal Thali
+                      </div>
+                      <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                        Paneer, Dal & Naan
+                      </div>
+                      <div className="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                        from ₹229
+                      </div>
+                    </div>
+
+                    {/* Item 3: Samosas & Masala Chai */}
+                    <div
+                      onClick={() => {
+                        setActiveTab('station-services');
+                        setFoodMegaMenuOpen(false);
+                      }}
+                      className="group cursor-pointer rounded-2xl p-2 bg-slate-50 dark:bg-slate-800/60 hover:bg-emerald-50/60 dark:hover:bg-slate-800 transition-all border border-slate-200/60 dark:border-slate-700/60 text-center"
+                    >
+                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-2 shadow-xs">
+                        <img
+                          src="/images/food/snacks.jpg"
+                          alt="Hot Samosa and Masala Cutting Chai"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-[9px] font-bold text-white flex items-center space-x-0.5">
+                          <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
+                          <span>4.7</span>
+                        </span>
+                      </div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                        Chai & Snacks
+                      </div>
+                      <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                        Crispy Samosa Combo
+                      </div>
+                      <div className="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                        from ₹79
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mega-menu Footer & Station Amenities Strip */}
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-4 text-slate-500 dark:text-slate-400 text-[11px]">
+                      <span className="flex items-center space-x-1">
+                        <Coffee className="w-3.5 h-3.5 text-blue-500" />
+                        <span>Executive Lounges & Pods</span>
+                      </span>
+                      <span>•</span>
+                      <span>Sahayak Porter Booking</span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setActiveTab('station-services');
+                        setFoodMegaMenuOpen(false);
+                      }}
+                      className="inline-flex items-center space-x-1 font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 text-xs"
+                    >
+                      <span>View All Services</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Direct "About" Link with Subtle "Made for Tannu" Floating Badge */}
+            <button
+              onClick={() => {
+                setActiveTab('about');
+                setFoodMegaMenuOpen(false);
+                setMoreDropdownOpen(false);
+              }}
+              className={`relative py-1 text-sm font-semibold transition-colors flex items-center space-x-1.5 ${
+                activeTab === 'about'
+                  ? 'text-rose-600 dark:text-rose-400 font-bold'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400'
+              }`}
+            >
+              <span>About</span>
+              {/* Subtle Floating Dedication Badge that preserves layout */}
+              <span className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded-full text-[9px] font-extrabold bg-rose-500/10 dark:bg-rose-950/70 text-rose-600 dark:text-rose-300 border border-rose-300/40 dark:border-rose-800/60 leading-none">
+                <span>Made for Tannu</span>
+                <Heart className="w-2.5 h-2.5 fill-rose-500 text-rose-500" />
+              </span>
+              {activeTab === 'about' && (
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-rose-500 rounded-full animate-fade-in" />
+              )}
+            </button>
+
+            {/* Secondary "More" Menu for Admin & Passenger Vault */}
+            <div className="relative" ref={moreDropdownRef}>
+              <button
+                onClick={() => {
+                  setMoreDropdownOpen(!moreDropdownOpen);
+                  setFoodMegaMenuOpen(false);
+                }}
                 className={`relative py-1 text-sm font-semibold transition-colors flex items-center space-x-1 ${
                   isMoreActive
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <span>More</span>
@@ -129,52 +355,7 @@ export const Navbar: React.FC = () => {
               </button>
 
               {moreDropdownOpen && (
-                <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 animate-fade-in space-y-1">
-                  {/* Services & Food */}
-                  <button
-                    onClick={() => {
-                      setActiveTab('station-services');
-                      setMoreDropdownOpen(false);
-                    }}
-                    className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors ${
-                      activeTab === 'station-services'
-                        ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    <UtensilsCrossed className="w-4 h-4 text-emerald-600" />
-                    <div className="text-left">
-                      <div>Services & Food</div>
-                      <div className="text-[10px] text-slate-500 font-normal">Lounges, pods & e-catering</div>
-                    </div>
-                  </button>
-
-                  {/* About RailEase (Dedicated for Tannu) */}
-                  <button
-                    onClick={() => {
-                      setActiveTab('about');
-                      setMoreDropdownOpen(false);
-                    }}
-                    className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors ${
-                      activeTab === 'about'
-                        ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
-                    <div className="text-left">
-                      <div className="flex items-center space-x-1.5">
-                        <span>About RailEase</span>
-                        <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-600 font-extrabold">
-                          Made for Tannu ❤️
-                        </span>
-                      </div>
-                      <div className="text-[10px] text-slate-500 font-normal">Our vision & dedication</div>
-                    </div>
-                  </button>
-
-                  <div className="my-1 border-t border-slate-100 dark:border-slate-800"></div>
-
+                <div className="absolute right-0 mt-3 w-60 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 animate-fade-in space-y-1">
                   {/* Master Passenger Vault */}
                   <button
                     onClick={() => {
@@ -225,9 +406,9 @@ export const Navbar: React.FC = () => {
             </div>
           </nav>
 
-          {/* Right Action Cluster: Cleanly Prioritized (Tatkal Turbo = Single Highlight Button) */}
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            {/* FastPay Wallet Balance: Clean Plain Text Next to Wallet Icon */}
+          {/* 3. Right: Prioritized Clean Actions (FastPay Plain Text, Sleek Ticket Icon, Single Highlighted Tatkal Button) */}
+          <div className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
+            {/* FastPay Wallet: Clean Text Next to Wallet Icon */}
             <div
               className="hidden sm:flex items-center space-x-1.5 text-xs text-slate-600 dark:text-slate-400 select-none"
               title="FastPay Auto-Auth Balance"
@@ -238,9 +419,13 @@ export const Navbar: React.FC = () => {
               </span>
             </div>
 
-            {/* My Bookings: Simple Minimal Ticket Icon Button with Counter Badge */}
+            {/* My Bookings: Sleek Minimal Ticket Icon Button with Counter Badge */}
             <button
-              onClick={() => setActiveTab('my-bookings')}
+              onClick={() => {
+                setActiveTab('my-bookings');
+                setFoodMegaMenuOpen(false);
+                setMoreDropdownOpen(false);
+              }}
               aria-label="My Bookings"
               title={`My Bookings (${bookings.length})`}
               className={`relative p-2 rounded-xl transition-colors ${
@@ -257,7 +442,7 @@ export const Navbar: React.FC = () => {
               )}
             </button>
 
-            {/* Tatkal Turbo: The Single Highlighted Accent Button */}
+            {/* Tatkal Turbo: The Single Highlighted Primary Accent Button */}
             <button
               onClick={toggleTatkalAutoAuth}
               className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
@@ -338,6 +523,26 @@ export const Navbar: React.FC = () => {
 
           <button
             onClick={() => {
+              setActiveTab('about');
+              setMobileMenuOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+              activeTab === 'about'
+                ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 font-bold'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900'
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
+              <span>About RailEase</span>
+            </div>
+            <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white">
+              Made for Tannu ❤️
+            </span>
+          </button>
+
+          <button
+            onClick={() => {
               setActiveTab('passengers');
               setMobileMenuOpen(false);
             }}
@@ -364,26 +569,6 @@ export const Navbar: React.FC = () => {
           >
             <ShieldAlert className="w-4 h-4 text-purple-600" />
             <span>Operations Console</span>
-          </button>
-
-          <button
-            onClick={() => {
-              setActiveTab('about');
-              setMobileMenuOpen(false);
-            }}
-            className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-              activeTab === 'about'
-                ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 font-bold'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900'
-            }`}
-          >
-            <div className="flex items-center space-x-3">
-              <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
-              <span>About RailEase</span>
-            </div>
-            <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white">
-              Made for Tannu ❤️
-            </span>
           </button>
 
           <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs px-2 text-slate-500">
