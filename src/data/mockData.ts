@@ -741,17 +741,17 @@ export const MOCK_LIVE_STATUS: Record<string, LiveTrainStatusData> = {
 };
 
 export const CATERING_MENU = [
-  { id: 'cat-1', name: 'Standard IRCTC Veg Thali', brand: 'IRCTC Pantry', price: 120, rating: 4.2, tag: 'Bestseller', veg: true },
-  { id: 'cat-2', name: 'Haldiram Royal North Indian Thali', brand: 'Haldiram', price: 240, rating: 4.8, tag: 'Premium', veg: true },
-  { id: 'cat-3', name: 'Chicken Dum Biryani Combo', brand: 'Behrouz Biryani', price: 290, rating: 4.7, tag: 'Special', veg: false },
-  { id: 'cat-4', name: 'Satvik Jain Special Meals', brand: 'Comesum', price: 210, rating: 4.6, tag: 'Pure Jain', veg: true },
-  { id: 'cat-5', name: 'Filter Coffee & Masala Dosa Combo', brand: 'A2B (Adyar Ananda Bhavan)', price: 160, rating: 4.9, tag: 'South Express', veg: true },
-  { id: 'cat-6', name: 'Warm Kulhad Masala Chai & Samosa (2 pcs)', brand: 'Chaayos Rail', price: 90, rating: 4.5, tag: 'Snack', veg: true },
+  { id: 'cat-1', name: 'Standard IRCTC Veg Thali', brand: 'IRCTC Pantry', price: 120, rating: 4.2, tag: 'Bestseller', veg: true, image: '/images/food/thali.jpg' },
+  { id: 'cat-2', name: 'Haldiram Royal North Indian Thali', brand: 'Haldiram', price: 240, rating: 4.8, tag: 'Premium', veg: true, image: '/images/food/thali.jpg' },
+  { id: 'cat-3', name: 'Chicken Dum Biryani Combo', brand: 'Behrouz Biryani', price: 290, rating: 4.7, tag: 'Special', veg: false, image: '/images/food/biryani.jpg' },
+  { id: 'cat-4', name: 'Satvik Jain Special Meals', brand: 'Comesum', price: 210, rating: 4.6, tag: 'Pure Jain', veg: true, image: '/images/food/thali.jpg' },
+  { id: 'cat-5', name: 'Filter Coffee & Masala Dosa Combo', brand: 'A2B (Adyar Ananda Bhavan)', price: 160, rating: 4.9, tag: 'South Express', veg: true, image: '/images/food/dosa.jpg' },
+  { id: 'cat-6', name: 'Warm Kulhad Masala Chai & Samosa (2 pcs)', brand: 'Chaayos Rail', price: 90, rating: 4.5, tag: 'Snack', veg: true, image: '/images/food/snacks.jpg' },
 ];
 
 export const RETIRING_ROOMS = [
-  { id: 'rr-1', stationCode: 'NDLS', name: 'IRCTC Executive Lounge (Paharganj Side)', ratePerHour: 180, amenities: ['Buffet Meals', 'Shower & Locker', 'High-speed Wi-Fi', 'Recliner Sofa'], rating: 4.7 },
-  { id: 'rr-2', stationCode: 'CSMT', name: 'Heritage AC Retiring Room - Deluxe Bed', ratePerHour: 240, amenities: ['Ensuite Bathroom', 'Air Conditioning', 'Luggage Vault', 'Room Service'], rating: 4.6 },
-  { id: 'rr-3', stationCode: 'HWH', name: 'Howrah Station AC Pod Hotel (Single Pod)', ratePerHour: 150, amenities: ['Smart TV', 'Charging Port', 'Soundproof Capsule', 'Keycard Access'], rating: 4.8 },
-  { id: 'rr-4', stationCode: 'SBC', name: 'Bengaluru Smart Transit Dormitory', ratePerHour: 90, amenities: ['Individual Locker', 'Fresh Linen', 'Clean Showers', 'CCTV Security'], rating: 4.4 },
+  { id: 'rr-1', stationCode: 'NDLS', name: 'IRCTC Executive Lounge (Paharganj Side)', ratePerHour: 180, amenities: ['Buffet Meals', 'Shower & Locker', 'High-speed Wi-Fi', 'Recliner Sofa'], rating: 4.7, image: '/images/hotels/lounge.jpg' },
+  { id: 'rr-2', stationCode: 'CSMT', name: 'Heritage AC Retiring Room - Deluxe Bed', ratePerHour: 240, amenities: ['Ensuite Bathroom', 'Air Conditioning', 'Luggage Vault', 'Room Service'], rating: 4.6, image: '/images/hotels/deluxe.jpg' },
+  { id: 'rr-3', stationCode: 'HWH', name: 'Howrah Station AC Pod Hotel (Single Pod)', ratePerHour: 150, amenities: ['Smart TV', 'Charging Port', 'Soundproof Capsule', 'Keycard Access'], rating: 4.8, image: '/images/hotels/pod.jpg' },
+  { id: 'rr-4', stationCode: 'SBC', name: 'Bengaluru Smart Transit Dormitory', ratePerHour: 90, amenities: ['Individual Locker', 'Fresh Linen', 'Clean Showers', 'CCTV Security'], rating: 4.4, image: '/images/hotels/dorm.jpg' },
 ];
