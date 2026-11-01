@@ -4,29 +4,48 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-blue-600 selection:text-white;
+    @apply bg-slate-50/80 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-orange-500 selection:text-white;
   }
 }
 
-/* Custom Glassmorphism & Modern Accents */
-.glass-panel {
-  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/80 dark:border-slate-800/80 shadow-sm;
+/* Custom Soft Box Shadows */
+.shadow-soft {
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
 }
 
-.glass-card {
-  @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl transition-all duration-200;
+.shadow-elevation {
+  box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
 }
 
-.rail-gradient {
-  background: linear-gradient(135deg, #074785 0%, #0354a2 50%, #026ac8 100%);
+.shadow-floating {
+  box-shadow: 0 25px 50px -12px rgba(15, 35, 75, 0.15);
 }
 
-.vande-gradient {
-  background: linear-gradient(135deg, #0e87ea 0%, #1e40af 50%, #f97316 100%);
+/* Modern Card Layouts with Soft Ambient Shadows */
+.clean-card {
+  @apply bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-md transition-all duration-200 hover:shadow-xl;
 }
 
-.saffron-gradient {
-  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+.floating-search-card {
+  @apply bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-2xl;
+}
+
+/* Clear accessible focus state */
+.input-focus {
+  @apply transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.input-box {
+  @apply w-full rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/80 p-3.5 text-slate-900 dark:text-white text-sm font-semibold input-focus;
+}
+
+/* High-Contrast Primary CTA Button */
+.btn-primary-orange {
+  @apply bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 hover:from-orange-700 hover:via-orange-600 hover:to-amber-600 text-white font-black tracking-wide shadow-lg shadow-orange-500/25 active:scale-[0.98] transition-all duration-150;
+}
+
+.btn-primary-navy {
+  @apply bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 hover:from-slate-950 hover:via-blue-950 hover:to-indigo-950 text-white font-black tracking-wide shadow-lg shadow-blue-900/25 active:scale-[0.98] transition-all duration-150;
 }
 
 /* Custom scrollbars */
@@ -44,7 +63,7 @@
   @apply bg-slate-400 dark:bg-slate-600;
 }
 
-/* Pulse badge animation */
+/* Live pulse beacon */
 @keyframes pulse-ring {
   0% {
     transform: scale(0.95);

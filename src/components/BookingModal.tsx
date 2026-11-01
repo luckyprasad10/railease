@@ -787,12 +787,12 @@ export const BookingModal: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             {step > 1 && (
               <button
                 type="button"
                 onClick={() => setStep((step - 1) as any)}
-                className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                className="px-4 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 Back
               </button>
@@ -802,17 +802,17 @@ export const BookingModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setStep((step + 1) as any)}
-                className="flex items-center space-x-1.5 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20"
+                className="flex items-center space-x-2 px-6 py-3 rounded-2xl btn-primary-orange text-xs font-black shadow-lg shadow-orange-500/20 uppercase tracking-wider"
               >
                 <span>Continue to {step === 1 ? 'Coach Layout' : 'Payment'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 stroke-[3]" />
               </button>
             ) : (
               <button
                 type="button"
                 disabled={isProcessing}
                 onClick={handleConfirmAndPay}
-                className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+                className="flex items-center space-x-2 px-7 py-3 rounded-2xl btn-primary-orange text-xs font-black shadow-xl shadow-orange-500/30 uppercase tracking-wider disabled:opacity-50"
               >
                 {isProcessing ? (
                   <>
@@ -821,7 +821,7 @@ export const BookingModal: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4 fill-white" />
                     <span>Pay ₹{grandTotal} & Confirm Ticket</span>
                   </>
                 )}
