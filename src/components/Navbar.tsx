@@ -178,7 +178,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center space-x-2 sm:space-x-2.5 flex-shrink-0">
             {/* FastPay Balance Pill */}
             <div
-              className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100/80 dark:bg-slate-850/80 border border-slate-200/60 dark:border-slate-700/60 text-xs select-none"
+              className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs select-none shadow-xs"
               title="FastPay Balance"
             >
               <Wallet className="w-3.5 h-3.5 text-emerald-500" />
@@ -190,10 +190,10 @@ export const Navbar: React.FC = () => {
             {/* My Bookings Pill */}
             <button
               onClick={() => setActiveTab('my-bookings')}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border shadow-xs ${
                 activeTab === 'my-bookings'
-                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-500/20'
-                  : 'bg-slate-100/80 dark:bg-slate-850/80 border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200/70 dark:hover:bg-slate-800'
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-blue-500/20'
+                  : 'bg-slate-100 dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800'
               }`}
             >
               <Ticket className="w-3.5 h-3.5" />
@@ -230,7 +230,7 @@ export const Navbar: React.FC = () => {
             <button
               onClick={toggleDarkMode}
               aria-label="Toggle Theme"
-              className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
             >
               {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
             </button>
