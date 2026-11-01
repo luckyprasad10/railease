@@ -7,6 +7,7 @@ import {
   Globe,
   HeartHandshake,
   CheckCircle2,
+  Heart,
 } from 'lucide-react';
 import { useRailwayStore } from '../store/useRailwayStore';
 
@@ -116,6 +117,15 @@ export const Footer: React.FC = () => {
                   Master Passenger Vault (Tatkal 1-Click)
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => setActiveTab('about')}
+                  className="hover:text-rose-500 font-semibold text-rose-600 dark:text-rose-400 flex items-center space-x-1.5 transition-colors"
+                >
+                  <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
+                  <span>About RailEase • Made for Tannu</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -181,8 +191,15 @@ export const Footer: React.FC = () => {
 
         {/* Bottom copyright */}
         <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
-          <div>
-            © 2026 RailEase (Indian Railway Management & Next-Gen Booking). All Rights Reserved.
+          <div className="flex flex-wrap items-center gap-3">
+            <span>© 2026 RailEase (Indian Railway Management & Next-Gen Booking). All Rights Reserved.</span>
+            <button
+              onClick={() => setActiveTab('about')}
+              className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/70 border border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:scale-105 active:scale-95 transition-all font-bold text-[11px] shadow-sm"
+            >
+              <Heart className="w-3 h-3 fill-rose-500 text-rose-500 animate-pulse" />
+              <span>Made with ❤️ for Tannu</span>
+            </button>
           </div>
           <div className="flex items-center space-x-4">
             <span>Server Latency: <strong>14ms</strong></span>

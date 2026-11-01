@@ -17,7 +17,7 @@ import {
   MOCK_LIVE_STATUS,
 } from '../data/mockData';
 
-export type ActiveTab = 'search' | 'pnr' | 'live' | 'passengers' | 'station-services' | 'admin' | 'my-bookings';
+export type ActiveTab = 'search' | 'pnr' | 'live' | 'passengers' | 'station-services' | 'admin' | 'my-bookings' | 'about';
 
 interface RailwayState {
   // Theme & Navigation

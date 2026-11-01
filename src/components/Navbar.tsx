@@ -17,6 +17,7 @@ import {
   ChevronDown,
   Sparkles,
   HelpCircle,
+  Heart,
 } from 'lucide-react';
 import { useRailwayStore, ActiveTab } from '../store/useRailwayStore';
 
@@ -53,6 +54,7 @@ export const Navbar: React.FC = () => {
     { id: 'pnr', label: 'PNR Status', icon: <Ticket className="w-4 h-4" /> },
     { id: 'live', label: 'Live Tracker', icon: <Activity className="w-4 h-4" />, isLive: true },
     { id: 'station-services', label: 'Services & Food', icon: <UtensilsCrossed className="w-4 h-4" /> },
+    { id: 'about', label: 'About', icon: <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" /> },
   ];
 
   return (
@@ -154,6 +156,27 @@ export const Navbar: React.FC = () => {
                     <div className="text-left">
                       <div>Operations Console</div>
                       <div className="text-[10px] text-slate-500 font-normal">Delays, platforms & quotas</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('about');
+                      setMoreDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors mt-1 ${
+                      activeTab === 'about'
+                        ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400'
+                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
+                    <div className="text-left">
+                      <div className="flex items-center space-x-1.5">
+                        <span>About RailEase</span>
+                        <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-600 font-extrabold">For Tannu</span>
+                      </div>
+                      <div className="text-[10px] text-slate-500 font-normal">Our vision & dedication</div>
                     </div>
                   </button>
 
@@ -292,6 +315,26 @@ export const Navbar: React.FC = () => {
           >
             <ShieldAlert className="w-4 h-4 text-purple-600" />
             <span>Operations Console</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('about');
+              setMobileMenuOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+              activeTab === 'about'
+                ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900'
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
+              <span>About RailEase</span>
+            </div>
+            <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white">
+              Made for Tannu ❤️
+            </span>
           </button>
 
           <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs px-2 text-slate-500">

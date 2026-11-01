@@ -10,6 +10,7 @@ import { AdminPortal } from './components/AdminPortal';
 import { MyBookings } from './components/MyBookings';
 import { BookingModal } from './components/BookingModal';
 import { TicketViewModal } from './components/TicketViewModal';
+import { AboutSection } from './components/AboutSection';
 import { Footer } from './components/Footer';
 import { useRailwayStore } from './store/useRailwayStore';
 
@@ -55,6 +56,8 @@ export function App() {
         {activeTab === 'admin' && <AdminPortal />}
 
         {activeTab === 'my-bookings' && <MyBookings />}
+
+        {activeTab === 'about' && <AboutSection />}
       </main>
 
       {/* Active Modals */}
