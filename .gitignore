@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+mingit
+mingit.zip
+*.log
+.DS_Store
